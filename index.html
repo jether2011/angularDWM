@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>DWM 2015</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--<meta http-equiv="refresh" content="30">-->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/datatables.bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-table.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.datatables.min.js"></script>
+        <script src="js/bootstrap.datatables.min.js"></script>
+        <script src="js/bootstrap-table.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script src="js/angularApp.js"></script>        
+        <script type="text/javascript">
+            $(document).ready(function () {                
+                $('#tabelaDados').DataTable({
+                    data: loadDataTable()
+                });               
+            });
+            function loadDataTable() {
+                //var urlPath = "http://192.168.0.5:9090/DWM2015/api/pessoa/";
+                var urlPath = "http://localhost:9090/DWM2015/api/pessoa/";
+
+                $.ajax({
+                    'global': true,
+                    'async': false,
+                    'type': 'GET',
+                    'url': urlPath,
+                    //'jsonpCallback': "",
+                    'dataType': 'json',
+                    'crossDomain': true,
+                    'success': function (data) {
+                        if (data.length > 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                var html = '<tr><th width=\"150\">'
+                                        + data[i].idPessoa
+                                        + '</th><th width=\"150\">'
+                                        + data[i].nome
+                                        + '</th><th>'
+                                        + data[i].email
+                                        + '</th></tr>';
+                                $("#tBodyValores").append(html);
+                            };
+                        }
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body ng-app="dwmApp">
+        <div class="container">
+            <h2>Diversos</h2><br/>
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#tabela">Informações Pessoas</a></li> 
+                <li><a data-toggle="tab" href="#formPessoa">Cadastro Pessoa</a></li>                  
+            </ul>
+            <div class="tab-content">
+                <div id="tabela" class="tab-pane fade in active" ng-controller="pessoaCtrl"><br/><br/>
+                    <h3>Com Bootstrap</h3><br/>
+                    <table id="tabelaDados" data-cache="false"                           
+                           class="table table-striped table-bordered table-responsive" 
+                           cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="150">ID</th>
+                                <th width="150">Nome</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>                
+                            </tr>
+                        </tfoot>
+                        <tbody id="tBodyValores"></tbody>                        
+                    </table>
+                    <br/><br/>
+                    <h3>Com AngularJS</h3><br/>
+                    <table id="tabelaAngular" class="table table-striped table-bordered table-responsive" cellspacing="0" width="100%" at-table at-paginated at-list="pessoas" at-config="config">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th> 
+                                <th></th>               
+                            </tr>
+                        </thead> 
+                        <tfoot>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>                
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr ng-repeat="p in pessoas">
+                                <td at-implicit at-sortable width="150" at-initial-sorting="asc">{{ p.idPessoa }}</td>
+                                <td at-implicit at-sortable width="150">{{ p.nome }}</td>
+                                <td at-implicit at-sortable>{{ p.email }}</td>
+                                <td><p>
+                                        <a ng-click="delete(p.idPessoa)" href="#" class="btn btn-danger btn-small">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </a>
+                                    </p>
+                                </td>
+                            </tr>                            
+                        </tbody>
+                    </table>
+                    <at-pagination at-list="pessoas" at-config="config"></at-pagination>
+                    <br/><br/><br/>
+                </div>
+                <div id="formPessoa" class="tab-pane fade">
+                    <br/><br/>
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Formulário</h3>
+                      </div>
+                      <div ng-controller="formCtrl" class="panel-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label for="nomePessoa" class="col-sm-2 control-label">Nome</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" ng-model="pessoa.nome" class="form-control" id="nomePessoa" placeholder="Nome" required/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="emailPessoa" class="col-sm-2 control-label">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" ng-model="pessoa.email" class="form-control" id="emailPessoa" placeholder="Email" required/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" ng-click="save(pessoa)" class="btn btn-default btn-info">Salvar</button>
+                                    </div>
+                                </div>
+                            </form>
+                      </div>
+                    </div>    
+                </div>    
+            </div>
+        </div>        
+    </body>
+</html>
