@@ -59,7 +59,8 @@
                 <li><a data-toggle="tab" href="#formPessoa">Cadastro Pessoa</a></li>                  
             </ul>
             <div class="tab-content">
-                <div id="tabela" class="tab-pane fade in active" ng-controller="pessoaCtrl"><br/><br/>
+                <div id="tabela" class="tab-pane fade in active" 
+				ng-controller="pessoaCtrl"><br/><br/>
                     <h3>Com Bootstrap</h3><br/>
                     <table id="tabelaDados" data-cache="false"                           
                            class="table table-striped table-bordered table-responsive" 
@@ -78,11 +79,15 @@
                                 <th>Email</th>                
                             </tr>
                         </tfoot>
-                        <tbody id="tBodyValores"></tbody>                        
+                        <tbody id="tBodyValores">
+						
+						</tbody>                        
                     </table>
                     <br/><br/>
                     <h3>Com AngularJS</h3><br/>
-                    <table id="tabelaAngular" class="table table-striped table-bordered table-responsive" cellspacing="0" width="100%" at-table at-paginated at-list="pessoas" at-config="config">
+                    <table id="tabelaAngular" 
+					class="table table-striped table-bordered table-responsive" 
+					cellspacing="0" width="100%" at-table at-paginated at-list="pessoas" at-config="config">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -101,11 +106,14 @@
                         </tfoot>
                         <tbody>
                             <tr ng-repeat="p in pessoas">
-                                <td at-implicit at-sortable width="150" at-initial-sorting="asc">{{ p.idPessoa }}</td>
-                                <td at-implicit at-sortable width="150">{{ p.nome }}</td>
+                                <td at-implicit at-sortable 
+								width="150" at-initial-sorting="asc">{{ p.idPessoa }}</td>
+                                <td at-implicit at-sortable 
+								width="150">{{ p.nome }}</td>
                                 <td at-implicit at-sortable>{{ p.email }}</td>
                                 <td><p>
-                                        <a ng-click="delete(p.idPessoa)" href="#" class="btn btn-danger btn-small">
+                                        <a ng-click="delete(p.idPessoa)" href="#" 
+										class="btn btn-danger btn-small">
                                             <span class="glyphicon glyphicon-remove"></span>
                                         </a>
                                     </p>
